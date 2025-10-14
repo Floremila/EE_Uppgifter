@@ -1,4 +1,4 @@
-package se.floremila.ee_uppgifter.lektion1;
+/* package se.floremila.ee_uppgifter.lektion1;
 
 import java.util.List;
 
@@ -25,3 +25,5 @@ public class Uppgiftfyra {
 
 
 record PersonRecord(String name) {}
+
+*/

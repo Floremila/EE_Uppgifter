@@ -1,7 +1,7 @@
 package se.floremila.ee_uppgifter.lektion1;
 import javax.validation.constraints.NotBlank;
 
-public class Uppgiftfem {
+public class UppgiftFem {
 
     static class User {
         @NotBlank

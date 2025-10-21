@@ -1,4 +1,4 @@
-package se.floremila.ee_uppgifter.lektion1;
+package se.floremila.ee_uppgifter.lektion0;
 import javax.validation.constraints.NotBlank;
 
 public class UppgiftFem {

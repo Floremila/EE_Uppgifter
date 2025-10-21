@@ -1,4 +1,4 @@
-package se.floremila.ee_uppgifter.lektion1.uppgift9;
+package se.floremila.ee_uppgifter.lektion0.uppgift9;
 
 
 public class UppgiftNio {

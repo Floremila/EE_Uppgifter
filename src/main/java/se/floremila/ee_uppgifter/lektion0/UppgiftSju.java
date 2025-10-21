@@ -1,4 +1,4 @@
-package se.floremila.ee_uppgifter.lektion1;
+package se.floremila.ee_uppgifter.lektion0;
 
 public class UppgiftSju {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package se.floremila.ee_uppgifter.lektion1.uppgift6;
+package se.floremila.ee_uppgifter.lektion0.uppgift6;
 
 public class UppgiftSex {
     public static void main(String[] args) {

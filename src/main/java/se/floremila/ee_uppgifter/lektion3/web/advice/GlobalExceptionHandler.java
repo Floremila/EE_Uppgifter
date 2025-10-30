@@ -1,5 +1,6 @@
 package se.floremila.ee_uppgifter.lektion3.web.advice;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -8,21 +9,35 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import jakarta.servlet.http.HttpServletRequest;
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import se.floremila.ee_uppgifter.lektion3.error.exception.BadRequestException;
+import se.floremila.ee_uppgifter.lektion3.error.exception.ProductNotFoundException;
 import se.floremila.ee_uppgifter.lektion3.error.exception.ResourceNotFoundException;
 import se.floremila.ee_uppgifter.lektion3.error.model.ErrorResponse;
 import se.floremila.ee_uppgifter.lektion3.error.model.ValidationErrorResponse;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex, HttpServletRequest req) {
+        log.warn("Product not found at {}: {}", req.getRequestURI(), ex.getMessage());
+        ErrorResponse body = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                safeMessage(ex.getMessage(), "Requested product was not found."),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
@@ -37,6 +52,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex, HttpServletRequest req) {
         log.warn("Bad request at {}: {}", req.getRequestURI(), ex.getMessage());
@@ -49,6 +65,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.badRequest().body(body);
     }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
@@ -70,9 +87,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAny(Exception ex, HttpServletRequest req) {
-        // Evitar datos personales en logs (GDPR). Loguear ID/código, no inputs sensibles.
+        // GDPR: no loguear datos personales del input
         log.error("Unhandled error at {}: {}", req.getRequestURI(), ex.toString());
         ErrorResponse body = new ErrorResponse(
                 Instant.now(),
@@ -90,6 +108,6 @@ public class GlobalExceptionHandler {
 
     private String safeMessage(String preferred, String fallback) {
         if (preferred == null || preferred.isBlank()) return fallback;
-        return preferred;
+        return preferred; //
     }
 }

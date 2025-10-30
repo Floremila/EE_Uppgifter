@@ -17,5 +17,11 @@ public class ProductController {
         Product created = service.createProduct(input);
         return ResponseEntity.status(201).body(created);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Product> findByName(@RequestParam String name) {
+        Product p = service.findByName(name);
+        return ResponseEntity.ok(p);
+    }
 }
 

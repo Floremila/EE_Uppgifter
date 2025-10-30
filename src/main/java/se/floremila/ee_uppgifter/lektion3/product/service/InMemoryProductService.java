@@ -1,6 +1,7 @@
 package se.floremila.ee_uppgifter.lektion3.product.service;
 
 import org.springframework.stereotype.Service;
+import se.floremila.ee_uppgifter.lektion3.error.exception.ProductNotFoundException;
 import se.floremila.ee_uppgifter.lektion3.product.model.Product;
 
 import java.util.ArrayList;
@@ -18,5 +19,12 @@ public class InMemoryProductService implements ProductService {
         store.add(p);
         return p;
     }
-}
 
+    @Override
+    public Product findByName(String name) {
+        return store.stream()
+                .filter(p -> p.getName() != null && p.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new ProductNotFoundException(name));
+    }
+}

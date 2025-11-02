@@ -1,4 +1,7 @@
 package se.floremila.ee_uppgifter.lektion4.message.service;
+import se.floremila.ee_uppgifter.lektion4.message.error.exception.MessageNotFoundException;
+
+// ...
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,13 @@ public class DefaultMessageService implements MessageService {
         return repository
                 .save(toSave)
                 .doOnSuccess(saved -> log.info("Message created: id={}, createdAt={}", saved.id(), saved.createdAt()));
+    }
+
+    @Override
+    public Mono<Message> getById(Long id) {
+        return repository.findById(id)
+                .switchIfEmpty(Mono.error(new MessageNotFoundException(id)))
+                .doOnSuccess(m -> log.info("Message fetched: id={}", m.id()));
     }
 }
 

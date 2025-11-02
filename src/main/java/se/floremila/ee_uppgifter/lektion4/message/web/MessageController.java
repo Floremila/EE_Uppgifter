@@ -1,4 +1,8 @@
 package se.floremila.ee_uppgifter.lektion4.message.web;
+import org.springframework.http.ResponseEntity;
+import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +30,11 @@ public class MessageController {
                 .map(saved -> ResponseEntity
                         .created(URI.create("/messages/" + saved.id())) // Location header
                         .body(saved));
+    }
+
+    @GetMapping("/{id}")
+    public Mono<ResponseEntity<Message>> getById(@PathVariable Long id) {
+        return service.getById(id)
+                .map(ResponseEntity::ok);
     }
 }

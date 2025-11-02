@@ -1,5 +1,4 @@
 package se.floremila.ee_uppgifter.lektion4.message.service;
-import reactor.core.publisher.Flux;
 import se.floremila.ee_uppgifter.lektion4.message.error.exception.MessageNotFoundException;
 
 // ...
@@ -45,12 +44,6 @@ public class DefaultMessageService implements MessageService {
         return repository.findById(id)
                 .switchIfEmpty(Mono.error(new MessageNotFoundException(id)))
                 .doOnSuccess(m -> log.info("Message fetched: id={}", m.id()));
-    }
-
-    @Override
-    public Flux<Message> getAll() {                 // <--- Implementación que faltaba
-        return repository.findAll()
-                .doOnSubscribe(s -> log.info("Fetching all messages"));
     }
 }
 

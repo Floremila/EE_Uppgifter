@@ -22,8 +22,7 @@ public class MessageController {
 
     @PostMapping
     public Mono<ResponseEntity<Message>> create(@Valid @RequestBody MessageCreateRequest req) {
-
-        return service.createMessage(req.getMessage(), req.getCreatedAt())
+        return service.createMessage(req.getMessage())
                 .map(saved -> ResponseEntity.created(URI.create("/messages/" + saved.id())).body(saved));
     }
 

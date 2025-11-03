@@ -24,7 +24,6 @@ public class DefaultMessageService implements MessageService {
 
     @Override
     public Mono<Message> createMessage(String text) {
-        // server-side timestamp (lo usaremos en 5.5/5.75)
         String safe = (text == null || text.isBlank()) ? "(empty)" : text.trim();
         Message toSave = new Message(
                 null,
@@ -33,20 +32,6 @@ public class DefaultMessageService implements MessageService {
         );
         return repository.save(toSave)
                 .doOnSuccess(saved -> log.info("Message created: id={}, createdAt={}", saved.id(), saved.createdAt()));
-    }
-
-
-    @Override
-    public Mono<Message> createMessage(String text, LocalDateTime createdAt) {
-        String safe = (text == null || text.isBlank()) ? "(empty)" : text.trim();
-        LocalDateTime ts = (createdAt != null) ? createdAt : LocalDateTime.now(ZoneOffset.UTC);
-        Message toSave = new Message(
-                null,
-                safe,
-                LocalDateTime.now(ZoneOffset.UTC)
-        );
-        return repository.save(toSave)
-                .doOnSuccess(saved -> log.info("Message created (client ts): id={}, createdAt={}", saved.id(), saved.createdAt()));
     }
 
     @Override

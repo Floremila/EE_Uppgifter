@@ -10,7 +10,4 @@ public interface MessageService {
     Mono<Message> createMessage(String text);
     Mono<Message> getById(Long id);
     Flux<Message> getAll();
-
-
-    Mono<Message> createMessage(String text, LocalDateTime createdAt);
 }

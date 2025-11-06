@@ -10,4 +10,5 @@ public interface MessageService {
     Mono<Message> createMessage(String text);
     Mono<Message> getById(Long id);
     Flux<Message> getAll();
+    Flux<Message> getPinned();
 }

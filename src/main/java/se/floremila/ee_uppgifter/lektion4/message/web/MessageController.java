@@ -35,4 +35,9 @@ public class MessageController {
     public Flux<Message> getAll() {
         return service.getAll();
     }
+
+    @GetMapping("/pinned")
+    public Flux<Message> getPinned() {
+        return service.getPinned();
+    }
 }

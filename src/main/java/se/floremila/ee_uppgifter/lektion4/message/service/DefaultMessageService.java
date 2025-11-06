@@ -47,6 +47,12 @@ public class DefaultMessageService implements MessageService {
         return repository.findAll()
                 .doOnSubscribe(s -> log.info("Fetching all messages"));
     }
+
+    @Override
+    public Flux<Message> getPinned() {
+        return repository.findAllByPinnedTrueOrderByCreatedAtDesc()
+                .doOnSubscribe(s -> log.info("Fetching pinned messages"));
+    }
 }
 
 

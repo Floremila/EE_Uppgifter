@@ -28,7 +28,8 @@ public class DefaultMessageService implements MessageService {
         Message toSave = new Message(
                 null,
                 safe,
-                LocalDateTime.now(ZoneOffset.UTC)
+                LocalDateTime.now(ZoneOffset.UTC),
+                true
         );
         return repository.save(toSave)
                 .doOnSuccess(saved -> log.info("Message created: id={}, createdAt={}", saved.id(), saved.createdAt()));
